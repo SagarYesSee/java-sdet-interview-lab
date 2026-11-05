@@ -1,0 +1,92 @@
+{
+  "window": {"from": "2026-10-05", "to": "2026-11-05", "inclusive": true},
+  "researchedOn": "2026-11-05",
+  "summary": "Current evidence is sparse for firsthand Java coding questions explicitly tied to 0–2-year QA/SDET interviews. No question was independently verified as having been asked. Use core practice for coverage and never infer frequency from this small source set.",
+  "independentlyVerifiedFirsthandQuestions": [],
+  "sources": [
+    {
+      "id": "prep-java-20261026",
+      "title": "Java Programs Asked in SDET Interviews (Tested)",
+      "url": "https://www.datastructures.in/interview-preparation/java-programs-for-sdet-interviews",
+      "publicationDate": "2026-10-26",
+      "publicationDateEvidence": "Article byline displays Oct 26, 2026.",
+      "interviewDate": null,
+      "classification": "Recent preparation resource",
+      "firsthand": false,
+      "independentlyVerified": false,
+      "region": "Not specified",
+      "experienceYears": "Not specified",
+      "questions": ["Duplicate character counts", "First unique character", "Word frequency", "String compression", "Remove duplicate list values", "Missing number", "Second-largest distinct value", "Balanced brackets", "Sort a map by value"],
+      "caveats": "Author presents a preparation collection, not a dated candidate interview. Claims about repetition or code testing belong to the author and were not independently verified. Adapt solutions to explicit input contracts and Java 8 compatibility."
+    },
+    {
+      "id": "prep-qa-20261025",
+      "title": "Coding Interviews for SDET and QA Automation Roles",
+      "url": "https://www.datastructures.in/interview-preparation/coding-interviews-for-sdet-roles",
+      "publicationDate": "2026-10-25",
+      "publicationDateEvidence": "Article byline displays Oct 25, 2026.",
+      "interviewDate": null,
+      "classification": "Recent preparation resource",
+      "firsthand": false,
+      "independentlyVerified": false,
+      "region": "Not specified",
+      "experienceYears": "Not specified",
+      "questions": ["Summarize ERROR log entries by service", "Compare expected and actual API response maps", "Find the first unique test ID", "Count HTTP status codes"],
+      "caveats": "These are representative preparation exercises. They are not evidence of a specific company asking them during the research window."
+    },
+    {
+      "id": "shared-epam-20261012",
+      "title": "Interview Solved #5 EPAM — SDET Interview Decoded",
+      "url": "https://qasimplifiedbyakash.com/substack/interview-solved-5-epam-sdet-interview-decoded-what-they-ask-what-they-expect-how-to-answer",
+      "publicationDate": "2026-10-12",
+      "publicationDateEvidence": "Page heading displays 12 October 2026.",
+      "interviewDate": null,
+      "classification": "Unverified shared interview report",
+      "firsthand": false,
+      "independentlyVerified": false,
+      "reportedCompany": "EPAM",
+      "region": "India-oriented context; candidate interview location not stated",
+      "experienceYears": "3–7",
+      "questions": ["Filter elements with Java 8", "Sort elements with Java 8", "Write Comparable and Comparator code", "Write API response verification code"],
+      "caveats": "Publisher attributes questions to an unnamed candidate. Exact interview date and location are absent. This is above the target experience range; use simple collection exercises only as supplemental practice. Sample article code uses records and List.of, which are not Java 8 features."
+    },
+    {
+      "id": "firsthand-framework-20261006",
+      "title": "SDET interview — r/QualityAssurance",
+      "url": "https://www.reddit.com/r/QualityAssurance/comments/1wz607z/sdet_interview/",
+      "publicationDate": "2026-10-06",
+      "publicationDateEvidence": "Search-index rendering provides Tuesday October 06 2026; opened Reddit page uses relative age. Absolute date is search-index evidence rather than a visible absolute page timestamp.",
+      "interviewDate": null,
+      "classification": "Unverified firsthand interview report",
+      "firsthand": true,
+      "independentlyVerified": false,
+      "reportedCompany": null,
+      "region": "Not specified",
+      "experienceYears": "Not specified",
+      "questions": ["Build a Playwright framework with a feature file, step definitions, page objects and three tests within 30 minutes"],
+      "caveats": "Poster says the interview just happened without an exact date. It is a framework exercise, not evidence for Java algorithm questions or junior India hiring. No named company is verified."
+    },
+    {
+      "id": "firsthand-infoedge-20261020",
+      "title": "Participated in InfoEdge SDET hiring challenge, conducted on 15th of Oct",
+      "url": "https://www.reddit.com/r/PlacementsPrep/comments/1xavz3d/participated_in_infoedge_sdet_hiring_challenge/",
+      "publicationDate": "2026-10-20",
+      "publicationDateEvidence": "Search-index rendering provides Tuesday October 20 2026; opened Reddit page uses relative age.",
+      "interviewDate": "2026-10-15",
+      "classification": "Unverified firsthand assessment report — no questions disclosed",
+      "firsthand": true,
+      "independentlyVerified": false,
+      "reportedCompany": "InfoEdge",
+      "region": "India-oriented campus hiring context",
+      "experienceYears": "Not specified",
+      "questions": [],
+      "caveats": "Post explicitly names the assessment date, separately from publication. It supplies no coding questions and cannot support question attribution."
+    }
+  ],
+  "excludedEvidence": [
+    "LinkedIn posts with relative ages or crawl dates but no reliable publication date were not used as recent-question evidence.",
+    "A TraceLink SDET-1 community report mentions anagrams and duplicate strings, but its stable publication date could not be established; it was not used as within-window evidence.",
+    "An EPAM Reddit thread was initially published before the window and concerned seven years of experience; in-window comments do not make the original thread a new report."
+  ],
+  "bankPolicy": "All independently authored exercises without a specific eligible source are Core interview practice. A matching preparation article is Recent preparation resource, never Recently asked. No frequency claim is supported."
+}
