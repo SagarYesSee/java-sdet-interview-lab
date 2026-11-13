@@ -1,6 +1,8 @@
 # Java SDET Interview Lab
 
-A dependency-free browser application with 46 authored exercises, interactive reference traces, editable Java drafts, eight debugging exercises, timed sessions, a 21-day plan, bookmarks, revision scheduling, and browser-local JSON backups.
+A dependency-free browser app with 46 interview coding questions, each with a **Java and a Python solution**, interactive reference traces, and an editable practice editor.
+
+There is **one roadmap**: an ordered list of all questions in the left panel (hide/show it with ☰). Work through a question (Understand → Think → Visualize → Solution → Explain & test), press **Mark complete & next**, and the app opens the next unfinished question. Switch Java / Python at the top; drafts are kept separately per language. Dark mode uses a slate + indigo palette.
 
 ## Preview
 
@@ -8,16 +10,26 @@ From this directory: `python3 -m http.server 4173` then open http://localhost:41
 
 No build step or package installation is required. Fonts have system fallbacks. The app can be hosted by any static HTTP server.
 
-## Java execution
+## Running your code
 
-The browser does not compile or run submissions. It clearly labels reference traces and outputs. Status and mock-interview rubric scores are manual self-assessments; no verified accuracy is invented. To execute your solution locally, download Solution.java and TestRunner.java from the question's practice desk, then run:
+The browser does not compile or run submissions. Download your code and the sample test file from the editor panel, then run locally:
 
 ```sh
-javac Solution.java TestRunner.java
-java TestRunner
+# Java
+javac Solution.java TestRunner.java && java TestRunner
+# Python 3.8+
+python3 test_solution.py      # expects solution.py in the same folder
 ```
 
-The harness contains executable sample assertions, not an exhaustive correctness proof. It runs only on the learner's machine. User-authored code is never uploaded to a third-party compiler.
+The harnesses contain sample assertions, not an exhaustive correctness proof.
+
+## Python solutions
+
+`python.mjs` holds one Python solution per question ID with the same contract as the Java version. Ordered sets are returned as lists, maps as dicts (insertion ordered), and multi-argument questions use keyword names matching the sample JSON (`a`, `target`, `k`, `b`, `expected`, `actual`). Verify all of them with:
+
+```sh
+node checks/verify_python.mjs
+```
 
 ## Reference verification
 
@@ -39,8 +51,8 @@ Every question has three sample cases plus edge-case guidance, hints, solution, 
 
 ## Persistence
 
-Storage key: `sdet-lab-v1`. Data is local to the browser origin. Backups import by merging stable question IDs, keeping future IDs. Changing between preview and hosted origins requires export/import. Time counts only while the practice workspace is visible and focused; it is not a productivity measure. Viewing solutions never automatically records a solve or mastery.
+Storage key: `sdet-lab-v1`, local to the browser origin. It stores completed questions, Java/Python drafts, theme, language and sidebar state. Older saves migrate automatically: questions marked "Solved Independently" or "Mastered" count as complete.
 
 ## GitHub Pages
 
-Publish from the main branch and repository root in Settings → Pages. The .nojekyll file serves the authored static files directly. Progress remains browser-local; use export/import when switching origins or devices.
+Publish from the main branch and repository root in Settings → Pages. The .nojekyll file serves the authored static files directly. Progress remains browser-local.
