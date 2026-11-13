@@ -1,3 +1,4 @@
+import {cloudSync} from './cloud-sync.mjs';
 import {alternatives} from './variants.mjs';
 import {bank,code,starter,execute} from './bank.mjs';
 import {pyCode,pyStarter,pyHarness} from './python.mjs';
@@ -23,15 +24,27 @@ let trace=execute(current(),current().samples[0]);
 
 function current(){return bank.find(q=>q.id===qid);}
 function entry(id=qid){return progress[id]||{};}
-function persist(){try{localStorage.setItem(STORE,json({...saved,schemaVersion:1,progress,theme,lang,sidebarHidden}));}catch{}}
-function update(value,id=qid){progress[id]={...entry(id),...value};persist();}
+function persist(){try{localStorage.setItem(STORE,json({...saved,schemaVersion:1,progress,syncFields,theme,lang,sidebarHidden}));}catch{}}
+let syncFields=saved.syncFields||{};
+for(const [id,p] of Object.entries(progress))for(const key of ['done','draft','pyDraft'])if(p[key]!==undefined){syncFields[id] ||= {};syncFields[id][key] ||= {value:p[key],at:0};}
+const cloud=cloudSync({read:()=>syncFields,notify:toast,apply:data=>{
+  if(json(data)===json(syncFields))return;
+  syncFields=data;
+  for(const [id,fields] of Object.entries(data))for(const [key,item] of Object.entries(fields))progress[id]={...entry(id),[key]:item.value};
+  persist();
+  const ed=$('#editor'),focused=document.activeElement===ed,start=ed?.selectionStart,end=ed?.selectionEnd,scroll=ed?.scrollTop;
+  render();if(focused){const next=$('#editor');next.focus();next.setSelectionRange(start,end);next.scrollTop=scroll;}
+}});
+function update(value,id=qid){progress[id]={...entry(id),...value};syncFields[id] ||= {};
+  for(const [key,v] of Object.entries(value))if(['done','draft','pyDraft'].includes(key))syncFields[id][key]={value:v,at:Math.max(Date.now(),(syncFields[id][key]?.at||0)+1)};
+  persist();cloud.schedule();}
 function toast(t){$('.toast')?.remove();let d=document.createElement('div');d.className='toast';d.setAttribute('role','status');d.textContent=t;document.body.append(d);setTimeout(()=>d.remove(),3500);}
 function locked(){return false;}
 const isPy=()=>lang==='python';
 const refCode=q=>isPy()?pyCode(q):code(q);
 const starterCode=q=>isPy()?pyStarter(q):starter(q);
 const draftKey=()=>isPy()?'pyDraft':'draft';
-const draft=q=>entry(q.id)[draftKey()]||starterCode(q);
+const draft=q=>entry(q.id)[draftKey()]??starterCode(q);
 const fileName=()=>isPy()?'solution.py':'Solution.java';
 const indexOf=id=>roadmap.findIndex(q=>q.id===id);
 const doneCount=()=>roadmap.filter(q=>entry(q.id).done).length;
@@ -60,7 +73,7 @@ function sidebar(){
 function render(){
   document.body.classList.toggle('dark',theme==='dark');
   let i=indexOf(qid);
-  $('#app').innerHTML=`<div class="shell ${sidebarHidden?'collapsed':''}">${sidebar()}<div class="sidebackdrop" data-action="toggleSidebar"></div><div class="mainarea"><header class="topbar"><button class="icon ghost" data-action="toggleSidebar" aria-label="${sidebarHidden?'Show':'Hide'} roadmap" title="${sidebarHidden?'Show':'Hide'} roadmap">☰</button><div class="crumb">Question <b>${i+1}</b> of ${roadmap.length}<span class="crumbdone"><span class="sep">·</span>${doneCount()} done</span></div><div class="langswitch" role="group" aria-label="Solution language">${[['java','Java'],['python','Python']].map(([v,l])=>`<button class="${lang===v?'active':''}" data-lang="${v}">${l}</button>`).join('')}</div><button class="icon ghost" data-action="theme" aria-label="Toggle light and dark theme">${theme==='light'?'☾':'☀'}</button></header><main class="content">${lab()}</main></div></div>`;
+  $('#app').innerHTML=`<div class="shell ${sidebarHidden?'collapsed':''}">${sidebar()}<div class="sidebackdrop" data-action="toggleSidebar"></div><div class="mainarea"><header class="topbar"><button class="icon ghost" data-action="toggleSidebar" aria-label="${sidebarHidden?'Show':'Hide'} roadmap" title="${sidebarHidden?'Show':'Hide'} roadmap">☰</button><div class="crumb">Question <b>${i+1}</b> of ${roadmap.length}<span class="crumbdone"><span class="sep">·</span>${doneCount()} done</span></div><button class="ghost sync-button" data-action="cloud" title="Save across devices">☁ <span data-sync-status>${esc(cloud.status())}</span></button><div class="langswitch" role="group" aria-label="Solution language">${[['java','Java'],['python','Python']].map(([v,l])=>`<button class="${lang===v?'active':''}" data-lang="${v}">${l}</button>`).join('')}</div><button class="icon ghost" data-action="theme" aria-label="Toggle light and dark theme">${theme==='light'?'☾':'☀'}</button></header><main class="content">${lab()}</main></div></div>`;
   bind();
 }
 
@@ -96,6 +109,7 @@ function bind(){
 async function act(a){
   const q=current();
   switch(a){
+    case 'cloud':cloud.dialog();return;
     case 'toggleSidebar':sidebarHidden=!sidebarHidden;persist();render();return;
     case 'theme':theme=theme==='light'?'dark':'light';persist();render();return;
     case 'complete':{update({done:true});let n=nextId();if(n){toast('Nice! Moving to the next question.');openQuestion(n);}else{toast('Roadmap complete! 🎉');render();}return;}

@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS saves (
+  code_hash TEXT PRIMARY KEY,
+  revision INTEGER NOT NULL,
+  data TEXT NOT NULL
+);

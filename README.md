@@ -55,4 +55,25 @@ Storage key: `sdet-lab-v1`, local to the browser origin. It stores completed que
 
 ## GitHub Pages
 
-Publish from the main branch and repository root in Settings → Pages. The .nojekyll file serves the authored static files directly. Progress remains browser-local.
+Publish from the main branch and repository root in Settings → Pages. The .nojekyll file serves the authored static files directly. Progress remains browser-local unless cloud sync is connected.
+
+## Cloud progress saving (no sign-in)
+
+Click the cloud button to create a private sync code. Copy that code to another device and choose **Connect & sync**. Completed questions and Java/Python drafts merge automatically; theme, language and sidebar settings stay device-local. Anyone with the code can access and modify the save. There is no recovery for a lost code. Disconnect keeps the browser copy.
+
+Existing browser progress uploads when creating or connecting a code. Changes merge per question field using device timestamps (keep device clocks accurate); newer changes win, including marking a question incomplete. Devices sync after edits, when focused or brought online, and every 20 seconds while open. Offline changes remain local and retry automatically. Concurrent cloud writes use revision checks and retry the merge. Joining an unknown code fails instead of creating an empty save.
+
+Deploy the separate backend in your existing Cloudflare account; your other project's resources are independent:
+
+1. Run `npx wrangler login` if this terminal is not already authenticated.
+2. Run `npx wrangler d1 create sdet-lab-progress`. Copy the resulting database ID into `cloudflare/wrangler.toml`.
+3. Set `ALLOWED_ORIGIN` in that file to your site's origin, such as `https://yourname.github.io` (no repository path or trailing slash).
+4. Run `npx wrangler d1 execute sdet-lab-progress --remote --file=cloudflare/schema.sql --config=cloudflare/wrangler.toml`.
+5. Run `npx wrangler deploy --config=cloudflare/wrangler.toml`.
+6. Set `SYNC_URL` in `sync-config.mjs` to the deployed HTTPS Worker URL and publish the updated static files.
+
+The Worker stores only a SHA-256 hash of the random 256-bit code, accepts bounded saves, and uses prepared D1 statements. Codes are sent in authorization headers, never URL parameters. The code is remembered in browser local storage, so only connect on trusted devices. There are no passwords or Cloudflare API keys in the frontend. This small backend does not include abuse rate limiting; monitor your Cloudflare usage before sharing the site widely.
+
+Backend setup reference: [Cloudflare D1 getting started](https://developers.cloudflare.com/d1/get-started/).
+
+Run cloud-save checks with `node --test checks/sync.test.mjs`. These exercise merge behavior and the Worker API using a D1 test double; a deployed smoke test is still needed after configuring your account.

@@ -1,0 +1,11 @@
+name = "sdet-lab-progress"
+main = "worker.mjs"
+compatibility_date = "2026-11-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://sagaryessee.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sdet-lab-progress"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"

@@ -196,3 +196,10 @@ details summary { cursor: pointer; font-size: 15px; color: var(--accent); paddin
   .pager button { max-width: 100% }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+.sync-dialog { width: min(540px,92vw); padding: 25px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); color: var(--ink) }
+.sync-dialog::backdrop { background: #0007 }
+.sync-dialog p { font-size: 13px; line-height: 1.6 }
+.sync-dialog input { display: block; width: 100%; margin-top: 8px; padding: 10px; background: var(--bg); color: var(--ink); border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box }
+.sync-dialog .row { flex-wrap: wrap }
+.sync-button { font-size: 11px; white-space: nowrap }
+@media(max-width:600px) { .sync-button span { display: none } }
