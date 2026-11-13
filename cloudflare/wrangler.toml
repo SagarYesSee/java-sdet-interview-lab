@@ -8,4 +8,4 @@ ALLOWED_ORIGIN = "https://sagaryessee.github.io"
 [[d1_databases]]
 binding = "DB"
 database_name = "sdet-lab-progress"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "f222672f-4a4a-4d0f-a88b-37626148bb95"
